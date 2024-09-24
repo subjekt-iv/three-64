@@ -82,6 +82,10 @@ const cube3 = new THREE.Mesh(
 gui.add(cube1.position, 'x', -3, 3, 0.01).name('Cube 1 X');
 gui.add(cube2.position, 'x', -3, 3, 0.01).name('Cube 2 X');
 gui.add(cube3.position, 'x', -3, 3, 0.01).name('Cube 3 X');
+gui.add(cube1.material, 'wireframe').name('Wireframe');
+gui.add(cube2.material, 'wireframe').name('Wireframe');
+gui.add(cube3.material, 'wireframe').name('Wireframe');
+
 
 // Function to change cube color
 const updateCubeColor = (cube, color) => {
