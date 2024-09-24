@@ -1,6 +1,10 @@
 import * as THREE from 'three';
 import gsap from 'gsap';
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
+import * as dat from 'dat.gui';
+
+// Debug
+const gui = new dat.GUI();
 
 // Create a scene
 const scene = new THREE.Scene();
@@ -51,14 +55,10 @@ window.addEventListener('dblclick', () => {
     }
 });
 
-
 // Create a camera
 const aspectRatio = window.innerWidth / window.innerHeight;
 const camera = new THREE.PerspectiveCamera(75, aspectRatio, 0.1, 100);
 camera.position.z = 7;
-
-
-
 
 // Create groups
 const group = new THREE.Group();
@@ -66,18 +66,32 @@ scene.add(group);
 
 const cube1 = new THREE.Mesh(
     new THREE.BoxGeometry(1, 1, 1),
-    new THREE.MeshBasicMaterial({ color: '#FF0000' })
+    new THREE.MeshBasicMaterial({ color: '#FF0000', wireframe: true })
 );
 
 const cube2 = new THREE.Mesh(
     new THREE.BoxGeometry(1, 1, 1),
-    new THREE.MeshBasicMaterial({ color: '#0000FF' })
+    new THREE.MeshBasicMaterial({ color: '#0000FF', wireframe: true })
 );
 
 const cube3 = new THREE.Mesh(
     new THREE.BoxGeometry(1, 1, 1),
-    new THREE.MeshBasicMaterial({ color: '#FFFF00' })
+    new THREE.MeshBasicMaterial({ color: '#FFFF00', wireframe: true })
 );
+
+gui.add(cube1.position, 'x', -3, 3, 0.01).name('Cube 1 X');
+gui.add(cube2.position, 'x', -3, 3, 0.01).name('Cube 2 X');
+gui.add(cube3.position, 'x', -3, 3, 0.01).name('Cube 3 X');
+
+// Function to change cube color
+const updateCubeColor = (cube, color) => {
+    cube.material.color.set(color);
+};
+
+// Add color controls to the GUI
+gui.addColor({ color: '#FF0000' }, 'color').name('Cube 1 Color').onChange(value => updateCubeColor(cube1, value));
+gui.addColor({ color: '#0000FF' }, 'color').name('Cube 2 Color').onChange(value => updateCubeColor(cube2, value));
+gui.addColor({ color: '#FFFF00' }, 'color').name('Cube 3 Color').onChange(value => updateCubeColor(cube3, value));
 
 cube1.position.x = -2;
 cube2.position.x = 2;
@@ -106,7 +120,6 @@ gsap.to(group.position, { duration: 1, delay: 1, x: 2 });
 gsap.to(group.position, { duration: 1, delay: 2, x: 0 });
 
 const tick = () => {
-
     // Update controls
     controls.update();
 

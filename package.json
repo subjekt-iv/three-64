@@ -9,6 +9,7 @@
     "build": "vite build"
   },
   "dependencies": {
+    "dat.gui": "^0.7.9",
     "gsap": "^3.5.1",
     "three": "^0.168.0",
     "vite": "^4.5.0"
