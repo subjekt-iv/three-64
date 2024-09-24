@@ -38,14 +38,19 @@ window.addEventListener('resize', () => {
 
 // Toggle Fullscreen
 window.addEventListener('dblclick', () => {
-    if (!document.fullscreenElement) {
-        canvas.requestFullscreen();
+    const fullscreenElement = document.fullscreenElement || document.webkitFullscreenElement;
+
+    if (!fullscreenElement) {
+        if (canvas.requestFullscreen) {
+            canvas.requestFullscreen();
+        } else if (canvas.webkitRequestFullscreen) {
+            canvas.webkitRequestFullscreen();
+        }
+    } else if (document.exitFullscreen || document.webkitExitFullscreen) {
+        document.exitFullscreen ? document.exitFullscreen() : document.webkitExitFullscreen();
     }
-    else {
-        document.exitFullscreen();
-    }
-}
-);
+});
+
 
 // Create a camera
 const aspectRatio = window.innerWidth / window.innerHeight;
