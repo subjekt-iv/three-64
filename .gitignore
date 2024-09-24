@@ -1,0 +1,31 @@
+# Node modules
+node_modules/
+
+# Vite build output
+dist/
+
+# Logs
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Environment variables
+.env
+.env.local
+.env.*.local
+
+# Vite cache
+.vite
+
+# macOS specific files
+.DS_Store
+
+# Editor folders
+.idea/
+.vscode/
+
+# p5.js libraries (if using the local version)
+libraries/
+
+# Optional: Ignore coverage reports, if using coverage testing tools like Jest
+coverage/
