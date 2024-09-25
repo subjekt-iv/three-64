@@ -86,6 +86,15 @@ gui.add(cube1.material, 'wireframe').name('Wireframe');
 gui.add(cube2.material, 'wireframe').name('Wireframe');
 gui.add(cube3.material, 'wireframe').name('Wireframe');
 
+const parameters = {
+    color: 0xff0000,
+    spin: () => {
+        gsap.to(group.rotation, { duration: 1, y: group.rotation.y + Math.PI * 2 });
+    }
+};
+
+
+
 
 // Function to change cube color
 const updateCubeColor = (cube, color) => {

@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Select Project</title>
+    <style>
+        /* Global reset and base styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            background-color: black;
+        }
+
+        html,
+        body {
+            overflow: hidden;
+            height: 100%;
+            font-family: "Courier New", Courier, monospace;
+            color: #33ff33;
+            /* Terminal-like green text */
+        }
+
+        /* Body container styling */
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background-color: black;
+        }
+
+        .container {
+            text-align: center;
+            color: #33ff33;
+            /* Terminal green */
+        }
+
+        /* Header styling */
+        h1 {
+            font-size: 24px;
+            margin-bottom: 30px;
+            color: #33ff33;
+            /* Terminal green */
+        }
+
+        /* Button styling to resemble terminal commands */
+        a {
+            display: inline-block;
+            margin: 10px 0;
+            padding: 10px 20px;
+            border: 2px solid #33ff33;
+            background-color: black;
+            color: #33ff33;
+            text-decoration: none;
+            font-size: 1.2em;
+            font-family: "Courier New", Courier, monospace;
+            cursor: pointer;
+            transition: background-color 0.3s, color 0.3s;
+        }
+
+        a:hover {
+            background-color: #33ff33;
+            color: black;
+        }
+
+        /* Text inside canvas styles */
+        .text {
+            font-family: "Courier New", Courier, monospace;
+            font-size: 20px;
+            color: #33ff33;
+            text-align: start;
+            padding-left: 20px;
+            margin-top: 20px;
+        }
+
+        /* Canvas element styling */
+        canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            outline: none;
+            display: block;
+            background-color: black;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h1>~/Select a Project</h1>
+        <a href="p5.html">View p5.js Project</a>
+        <a href="three.html">View Three.js Project</a>
+    </div>
+</body>
+
+</html>
