@@ -3,6 +3,7 @@ import gsap from 'gsap';
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
 import * as dat from 'dat.gui';
 
+
 // Debug
 const gui = new dat.GUI();
 
@@ -20,6 +21,34 @@ const sizes = {
     width: window.innerWidth,
     height: window.innerHeight
 };
+
+// Load a texture
+const loadingManager = new THREE.LoadingManager();
+const textureLoader = new THREE.TextureLoader(loadingManager);
+
+loadingManager.onStart = () => {
+    console.log('Loading started');
+};
+loadingManager.onLoad = () => {
+    console.log('Loading finished');
+};
+
+loadingManager.onError = () => { console.log('Loading error') };
+
+
+const colorTexture = textureLoader.load('assets/textures/door/color.jpg');
+const alphaTexture = textureLoader.load('assets/textures/door/alpha.jpg');
+const heightTexture = textureLoader.load('assets/textures/door/height.jpg');
+const normalTexture = textureLoader.load('assets/textures/door/normal.jpg');
+const ambientOcclusionTexture = textureLoader.load('assets/textures/door/ambientOcclusion.jpg');
+const metalnessTexture = textureLoader.load('assets/textures/door/metalness.jpg');
+const roughnessTexture = textureLoader.load('assets/textures/door/roughness.jpg');
+
+
+colorTexture.minFilter = THREE.NearestFilter;
+
+
+
 
 window.addEventListener('mousemove', (event) => {
     cursor.x = event.clientX / window.innerWidth - 0.5;
@@ -66,25 +95,29 @@ scene.add(group);
 
 const cube1 = new THREE.Mesh(
     new THREE.BoxGeometry(1, 1, 1),
-    new THREE.MeshBasicMaterial({ color: '#FF0000', wireframe: true })
+    new THREE.MeshBasicMaterial({ map: colorTexture })
 );
 
 const cube2 = new THREE.Mesh(
     new THREE.BoxGeometry(1, 1, 1),
-    new THREE.MeshBasicMaterial({ color: '#0000FF', wireframe: true })
+    new THREE.MeshBasicMaterial({ map: colorTexture })
 );
 
 const cube3 = new THREE.Mesh(
     new THREE.BoxGeometry(1, 1, 1),
-    new THREE.MeshBasicMaterial({ color: '#FFFF00', wireframe: true })
+    new THREE.MeshBasicMaterial({ map: colorTexture })
 );
+
+
 
 gui.add(cube1.position, 'x', -3, 3, 0.01).name('Cube 1 X');
 gui.add(cube2.position, 'x', -3, 3, 0.01).name('Cube 2 X');
 gui.add(cube3.position, 'x', -3, 3, 0.01).name('Cube 3 X');
 gui.add(cube1.material, 'wireframe').name('Wireframe');
-gui.add(cube2.material, 'wireframe').name('Wireframe');
 gui.add(cube3.material, 'wireframe').name('Wireframe');
+gui.add(cube2.material, 'wireframe').name('Wireframe');
+
+
 
 const parameters = {
     color: 0xff0000,
@@ -92,6 +125,9 @@ const parameters = {
         gsap.to(group.rotation, { duration: 1, y: group.rotation.y + Math.PI * 2 });
     }
 };
+
+// Add a button for activating the spin function
+gui.add(parameters, 'spin').name('Spin');
 
 
 
@@ -129,8 +165,6 @@ controls.enableDamping = true; // Smooth the camera movement
 // Time
 const clock = new THREE.Clock();
 
-gsap.to(group.position, { duration: 1, delay: 1, x: 2 });
-gsap.to(group.position, { duration: 1, delay: 2, x: 0 });
 
 const tick = () => {
     // Update controls
