@@ -25,3 +25,4 @@ To get started with this project, clone the repository and install dependencies.
 git clone https://github.com/subjekt-iv/three-64.git
 cd three-64
 npm install
+```
