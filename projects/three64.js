@@ -11,7 +11,6 @@ import { RectAreaLightHelper } from 'three/examples/jsm/helpers/RectAreaLightHel
 const gui = new dat.GUI();
 
 
-
 // Scene setup
 const scene = new THREE.Scene();
 

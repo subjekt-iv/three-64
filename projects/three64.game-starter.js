@@ -1,6 +1,7 @@
 import * as THREE from 'three';
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js';
+import ParticleSystem from '../src/components';
 
 // Canvas Setup
 const canvas = document.querySelector('canvas.webgl');
@@ -17,7 +18,7 @@ const sizes = {
 
 // Camera Setup
 const camera = new THREE.PerspectiveCamera(75, sizes.width / sizes.height, 0.1, 100);
-camera.position.set(0, 5, 15); // Position behind and above the spaceship
+camera.position.set(0, 5, 15);
 scene.add(camera);
 
 // Renderer Setup
@@ -77,6 +78,8 @@ scene.add(floor);
 const gltfLoader = new GLTFLoader();
 let spaceship = null;
 
+let thrusterParticleSystem = null; // Declare a global variable for the particle system
+
 gltfLoader.load(
     '/assets/models/spaceship.glb', // Replace with your spaceship model path
     (gltf) => {
@@ -91,6 +94,12 @@ gltfLoader.load(
             }
         });
         scene.add(spaceship);
+
+        // Initialize ParticleSystem for the thruster
+        thrusterParticleSystem = new ParticleSystem({
+            parent: scene,
+            camera: camera,
+        });
     },
     undefined,
     (error) => {
@@ -126,7 +135,7 @@ window.addEventListener('keyup', (event) => {
 });
 
 // Update Spaceship Movement
-const updateSpaceshipPosition = () => {
+const updateSpaceshipPosition = (deltaTime) => {
     if (!spaceship) return;
 
     // Accelerate forward movement
@@ -155,7 +164,26 @@ const updateSpaceshipPosition = () => {
 
     // Constrain vertical movement
     spaceship.position.y = Math.max(minHeight, Math.min(maxHeight, spaceship.position.y));
+
+    // Position and orient the particle system (thruster)
+    if (thrusterParticleSystem) {
+        // Adjust the position of the particle system based on the spaceship's thruster
+        const thrusterPosition = new THREE.Vector3(8, 0, -10); // Thruster's local position
+        spaceship.localToWorld(thrusterPosition); // Convert local position to world position
+        thrusterParticleSystem._points.position.copy(thrusterPosition);
+
+        // Rotate the thruster flames to be horizontal
+        const thrusterRotation = new THREE.Quaternion();
+        spaceship.getWorldQuaternion(thrusterRotation); // Align with the spaceship's orientation
+        thrusterRotation.multiply(new THREE.Quaternion().setFromEuler(new THREE.Euler(Math.PI / 2, 0, 0))); // Rotate flames horizontally
+        thrusterParticleSystem._points.quaternion.copy(thrusterRotation);
+
+        // Update particle system (simulate thrusters firing)
+        thrusterParticleSystem.Step(deltaTime);
+    }
 };
+
+
 
 // Follow Spaceship with Camera
 const cameraOffset = new THREE.Vector3(0, 5, -15);
@@ -184,9 +212,14 @@ window.addEventListener('resize', () => {
 });
 
 // Animation Loop
-const tick = () => {
+let previousTime = 0;
+
+const tick = (currentTime) => {
+    const deltaTime = (currentTime - previousTime) * 0.001; // Calculate delta time in seconds
+    previousTime = currentTime;
+
     // Update spaceship movement
-    updateSpaceshipPosition();
+    updateSpaceshipPosition(deltaTime);
 
     // Update camera to follow the spaceship
     updateCameraPosition();
@@ -198,4 +231,7 @@ const tick = () => {
     window.requestAnimationFrame(tick);
 };
 
-tick();
+tick(0); // Start the loop with initial time
+
+
+
